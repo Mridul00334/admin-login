@@ -1,5 +1,5 @@
 import axios from "axios"
-let base_url ="http://api.magicindi.com";
+let base_url ="https://api.magicindi.com";
 let local_url="http://localhost:9000"
 
 export const getList = async () => {
