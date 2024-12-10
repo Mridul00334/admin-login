@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import './Login.css';
-
+import {login} from "../api/index";
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e){
     e.preventDefault();
     setError('');
 
     // This is a mock login function. In a real application, you would call an API here.
-    if (email === 'anurag@magicindi.com' && password === 'password') {
-      
-      props.setIsLoggedIn(true);
+    if (email  && password ) {
+      let res = await login({email,password})
+      if(res.success) {
+        props.setIsLoggedIn(true);
+        props.setUserData(res.user.email);
+
+      }else{
+        setError('Invalid email or password');
+      }
       // Here you would typically set the user in your app's state and redirect
     } else {
       setError('Invalid email or password');

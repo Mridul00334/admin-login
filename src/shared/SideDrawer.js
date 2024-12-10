@@ -9,21 +9,26 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useSelector } from 'react-redux';
 import logo from '../assets/logo.png';
 import Tree from "../Component/tree";
+import Header from './Header';
+import User from "../Component/User";
 
+import Navbar from './Navbar';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 const sidebarItems = [
-  { 
-    text: 'Registration', 
+  {
+    text: 'Registration',
     icon: <DashboardIcon />,
     subItems: ['User']
   },
-  { 
-    text: 'Categories', 
+  {
+    text: 'Categories',
     icon: <AssignmentIcon />,
     subItems: ['Overview', 'Add business']
   }
 ];
 
-function SideDrawer() {
+function SideDrawer(props) {
+ 
   const customizer = useSelector((state) => state.customizer);
   const [openMenus, setOpenMenus] = useState({});
 
@@ -34,60 +39,34 @@ function SideDrawer() {
     }));
   };
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      {/* Drawer */}
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        open
-        PaperProps={{
-          sx: {
-            width: customizer.SidebarWidth, // Customizable width
-            backgroundColor: customizer.activeMode === 'dark' ? customizer.darkBackground900 : customizer.activeSidebarBg,
-            color: customizer.activeSidebarBg === '#ffffff' ? '' : 'black',
-            border: '0 !important',
-            boxShadow: (theme) => theme.shadows[8],
-            height: '100%', // Ensure it spans full height
-            position: 'relative', // Ensure correct stacking context
-          },
-        }}
-      >
-        <Box sx={{ backgroundColor: customizer.activeMode === 'dark' ? customizer.darkBackground900 : customizer.activeSidebarBg, height: '100%' }}>
-          <Box px={3}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <List>
-            {sidebarItems.map((item) => (
-              <React.Fragment key={item.text}>
-                <ListItem button onClick={() => handleClick(item.text)}>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                  {openMenus[item.text] ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={openMenus[item.text]} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {item.subItems.map((subItem) => (
-                      <ListItem button key={subItem} sx={{ pl: 4 }}>
-                        <ListItemText primary={subItem} />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Collapse>
-              </React.Fragment>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
 
+
+  return (<>
+    <Header setIsLoggedIn={props.setIsLoggedIn} userData={props.userData} />
+    <Box sx={{ display: 'flex' }}>
+    <Router>
+
+      {/* Drawer */}
+     
+<Navbar/>
       {/* Main Content */}
-      <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <Typography variant="h4" gutterBottom>
-          Education List
-        </Typography>
-        <Tree />
-      </Box>
+     
+        <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+
+
+          <Routes>
+            <Route path="/overview" element={
+              <><Typography variant="h4" gutterBottom>
+                Education List
+              </Typography>
+                <Tree />
+              </>} />
+            <Route path="/" element={<User />} />
+          </Routes>
+        </Box>
+      </Router>
     </Box>
+  </>
   );
 }
 

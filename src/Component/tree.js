@@ -165,8 +165,8 @@ const ReactBasicTable = () => {
   const [editable, setEditable] = useState(false);
   const [nodes, setNodes] = useState([]);
   const [allKeys, setAllKeys] = useState([]);
-  const [selectedItems,setSelectedItems]=useState([]);
-  const [isLoading,setIsLoading]=useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formatKey = (key) => {
     // A dictionary for specific keys to provide custom formatting
@@ -189,12 +189,12 @@ const ReactBasicTable = () => {
       Flag: 'Flag',
       isVideo: 'Is Video'
     };
-  
+
     // If the key exists in the customKeys dictionary, return the formatted name
     if (customKeys[key]) {
       return customKeys[key];
     }
-  
+
     // Otherwise, remove underscores, split the string into words, capitalize each word, and join them with spaces
     return key
       .replace(/_/g, ' ')               // Replace underscores with spaces
@@ -207,47 +207,48 @@ const ReactBasicTable = () => {
       let data = await getList();
       const transformData = (data, parentKey = 0) => {
         return data.map((item, index) => {
-            const currentKey = parentKey; // Create key for the current item
-    
-            // Spread informationDetails and analyticsDetails into the same object
-           let {informationDetails ,analyticsDetails,children,Information_ID,Analytics_ID,...res}=item
-            const transformedItem = {
-                key: currentKey.toString(), // Add the current key
-                data:{...res,
-                ...informationDetails,
-                ...analyticsDetails
-                },
-                children: item.children ? transformData(item.children, `${currentKey}-${index}`) : []
-                 // Recursively handle children with updated parent key
-            };
-    
-            // Clean up the now unnecessary informationDetails and analyticsDetails
-            delete transformedItem.data.informationDetails;
-            delete transformedItem.data.analyticsDetails;
-            delete transformedItem.data.Information_ID;
-            delete transformedItem.data.Analytics_ID;
-    
-            return transformedItem;
-        });
-    };
-    let finalArr = transformData(data);
-    
-    const akey = new Set();
-    finalArr.forEach((node) => {
-         Object.keys(node.data).forEach((key) => (key !== "key" || key!=="children") && akey.add(key));
-       });
-       const selectedKeys = Array.from(akey).slice(0, 4);
-        // Assuming `name` is `key` and `code` is also `key`
-    
-    setSelectedItems(Array.from(akey));  // Set the initial list of items with `name` and `code`
-    setAllKeys(selectedKeys);    // Set the initial selected keys
-    setNodes(finalArr)
-    console.log(Array.from(akey))
-    setIsLoading(false)
-    };
-  
+          const currentKey = parentKey; // Create key for the current item
 
-    
+          // Spread informationDetails and analyticsDetails into the same object
+          let { informationDetails, analyticsDetails, children, Information_ID, Analytics_ID, ...res } = item
+          const transformedItem = {
+            key: currentKey.toString(), // Add the current key
+            data: {
+              ...res,
+              ...informationDetails,
+              ...analyticsDetails
+            },
+            children: item.children ? transformData(item.children, `${currentKey}-${index}`) : []
+            // Recursively handle children with updated parent key
+          };
+
+          // Clean up the now unnecessary informationDetails and analyticsDetails
+          delete transformedItem.data.informationDetails;
+          delete transformedItem.data.analyticsDetails;
+          delete transformedItem.data.Information_ID;
+          delete transformedItem.data.Analytics_ID;
+
+          return transformedItem;
+        });
+      };
+      let finalArr = transformData(data);
+
+      const akey = new Set();
+      finalArr.forEach((node) => {
+        Object.keys(node.data).forEach((key) => (key !== "key" || key !== "children") && akey.add(key));
+      });
+      const selectedKeys = Array.from(akey).slice(0, 4);
+      // Assuming `name` is `key` and `code` is also `key`
+
+      setSelectedItems(Array.from(akey));  // Set the initial list of items with `name` and `code`
+      setAllKeys(selectedKeys);    // Set the initial selected keys
+      setNodes(finalArr)
+      console.log(Array.from(akey))
+      setIsLoading(false)
+    };
+
+
+
     getData()
 
   }, []);
@@ -298,58 +299,58 @@ const ReactBasicTable = () => {
   // Custom body template for the 'Name' column to include an icon
 
 
-  
 
- 
+
+
 
   const getHeader = () => {
     return (
-      <div className="flex" style={{justifyContent:"space-between"}} >
-      <div className="flex">
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
-          <InputText className="search-input" style={{ display: "flex" }} type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search List" />
-        </IconField>
-        
+      <div className="flex" style={{ justifyContent: "space-between" }} >
+        <div className="flex">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search" />
+            <InputText className="search-input" style={{ display: "flex" }} type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search List" />
+          </IconField>
+
+        </div>
+        <div className="card flex justify-content-center" style={{ margin: "0px 30px", zIndex: "100", background: "white" }}>
+          <MultiSelect value={allKeys} onChange={(e) => handleCheck(e.value)} options={selectedItems}
+            placeholder="Select Column" maxSelectedLabels={3} className="w-full md:w-20rem"
+            panelStyle={{
+              backgroundColor: 'white', // Makes the dropdown background transparent
+            }} />
+        </div>
       </div>
-      <div className="card flex justify-content-center" style={{margin:"0px 30px",zIndex:"100",background:"white"}}>
-      <MultiSelect value={allKeys} onChange={(e) => handleCheck(e.value)} options={selectedItems} 
-          placeholder="Select Column" maxSelectedLabels={3} className="w-full md:w-20rem"
-          panelStyle={{
-            backgroundColor: 'white', // Makes the dropdown background transparent
-          }} />
-  </div>
-  </div>
     );
   };
 
   let header = getHeader();
 
 
-  
+
   const handleCheck = (val) => {
     // Remove codes that are not selected anymore and add new selected codes
-  // Directly assign selected codes to `updatedAllKeys`
-    
+    // Directly assign selected codes to `updatedAllKeys`
+
     // Update `allKeys` with the selected items
-    if(val===null || val.length===0){
+    if (val === null || val.length === 0) {
       return;
     }
     setAllKeys(val)
-  
+
     // Update `selectedItems` by mapping the `selectedCodes` to the corresponding objects
-      // Update selected items
+    // Update selected items
   };
-  
-  
+
+
 
   const handleDownload = () => {
-    
+
   };
 
   return (
     <DownloadCard onDownload={handleDownload}>
-      {isLoading && <Spinner/>}
+      {isLoading && <Spinner />}
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Box sx={{
@@ -377,15 +378,15 @@ const ReactBasicTable = () => {
               fontWeight: 500,
               color: 'rgba(0, 0, 0, 0.87)',
               width: "auto",
-              maxWidth:"30px",
+              maxWidth: "30px",
               overflow: "hidden"
             },
           }}>
-            <div className="flex align-items-center" style={{flexWrap:"wrap",margin:"30px"}}>
+            <div className="flex align-items-center" style={{ flexWrap: "wrap", margin: "30px" }}>
 
 
             </div>
-                
+
             <TreeTable
               value={nodes}
               globalFilter={globalFilter}
@@ -400,26 +401,26 @@ const ReactBasicTable = () => {
                   field={key} // Use the key as the field
                   header={formatKey(key)} // Use the key as the header
                   filterPlaceholder={`Filter by ${key}`} // Use key in filter placeholder
-                  
+
                   body={(rowData) => {
                     // Check if the field is an object, and handle it accordingly
-                    if(key ==="_id"){
-                      return <img src={epic} style={{height:"14px",weight:"10px"}}/>
+                    if (key === "_id") {
+                      return <img src={epic} style={{ height: "14px", weight: "10px" }} />
                     }
                     if (typeof rowData.data[key] === 'object' && rowData.data[key] !== null) {
                       // For 'createdBy', render firstName and lastName
                       if (key === 'createdBy') {
                         return `${rowData.data[key].firstName} ${rowData.data[key].lastName}`;
                       }
-                     
+
                       if (key === 'FireBase_Remote_Config') {
                         return `${rowData.data[key].featureEnabled}`;
                       }
-                      if(key=="Keywords"){
+                      if (key == "Keywords") {
                         return rowData.data[key].join(",")
                       }
-                      if(key ==="impressionTag"){
-                        return  `${rowData.data[key].ID - rowData.data[key].NAME}`
+                      if (key === "impressionTag") {
+                        return `${rowData.data[key].ID - rowData.data[key].NAME}`
                       }
 
                       // For any other object fields, you could decide to show a JSON string or handle differently
@@ -432,12 +433,12 @@ const ReactBasicTable = () => {
                     return rowData.data[key];
                   }}
                   // Adjust for expandability if needed
-                  expander={key==="_id"}
+                  expander={key === "_id"}
                   sortable // Enable sorting
                 />
               ))}
             </TreeTable>
-            
+
 
 
 
