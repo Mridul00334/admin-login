@@ -1,6 +1,6 @@
 import axios from "axios"
 let base_url ="https://api.magicindi.com";
-let local_url="http://localhost:9000"
+let local_url="http://localhost:9000/admin"
 
 export const getList = async () => {
     try {
@@ -17,7 +17,7 @@ export const getList = async () => {
   export const login = async (body) => {
     try {
     
-      const response = await axios.post(`${local_url}/login`,body);
+      const response = await axios.post(`${local_url}/admin/login`,body);
       
       const result =  response.data;
       return result;  // Return the data to be used by the component
@@ -30,7 +30,7 @@ export const getList = async () => {
   export const fetchUser = async()=>{
     try {
     
-      const response = await axios.get(`${local_url}/fetchUser`);
+      const response = await axios.get(`${local_url}/admin/fetchUser`);
       
       const result =  response.data;
       return result;  // Return the data to be used by the component
