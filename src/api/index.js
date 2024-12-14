@@ -4,7 +4,7 @@ let local_url="http://localhost:9000"
 
 export const getList = async () => {
     try {
-      const response = await axios.get(`${local_url}/get-list`);
+      const response = await axios.get(`${base_url}/get-list`);
       
       const result =  response.data;
       return result;  // Return the data to be used by the component
@@ -17,7 +17,7 @@ export const getList = async () => {
   export const login = async (body) => {
     try {
     
-      const response = await axios.post(`${local_url}/admin/login`,body);
+      const response = await axios.post(`${base_url}/admin/login`,body);
       
       const result =  response.data;
       return result;  // Return the data to be used by the component
@@ -30,7 +30,7 @@ export const getList = async () => {
   export const fetchUser = async()=>{
     try {
     
-      const response = await axios.get(`${local_url}/admin/fetchUser`);
+      const response = await axios.get(`${base_url}/admin/fetchUser`);
       
       const result =  response.data;
       return result;  // Return the data to be used by the component
@@ -42,7 +42,7 @@ export const getList = async () => {
   export const addEmployee = async(data)=>{
     try {
     
-      const response = await axios.post(`${local_url}/admin/submitUser`,data);
+      const response = await axios.post(`${base_url}/admin/submitUser`,data);
       
       const result =  response.data;
       return result;  // Return the data to be used by the component
