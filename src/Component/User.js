@@ -23,6 +23,12 @@ import {
   Stack,
   InputAdornment,
   Chip,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  Checkbox
 } from '@mui/material';
 import {
   IconEdit,
@@ -32,222 +38,30 @@ import {
   IconShoppingBag,
   IconSortAscending,
   IconTrash,
-  IconTruck,
+  IconTruck
 } from "@tabler/icons";
 // import CustomCheckbox from 'src/components/forms/theme-elements/CustomCheckbox';
 import { Link } from 'react-router-dom';
 import { fetchUser } from '../api/index';
+import { isAction } from '@reduxjs/toolkit';
+import { addEmployee } from '../api/index';
 
-const invoceLists = [
-  {
-    id: 101,
-    billFrom: 'PineappleInc.',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ganesh glory,Godrej garden city,Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'Redq Inc.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date(),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Shipped',
-    completed: false,
-    isSelected: false,
-  },
-  {
-    id: 102,
-    billFrom: 'Pineapple.',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ganesh glory,Godrej garden city,Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'ME Inc.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date(),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Delivered',
-    completed: false,
-    isSelected: false,
-  },
-  {
-    id: 103,
-    billFrom: 'Incorporation.',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'Redirwed.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date(),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Pending',
-    completed: false,
-    isSelected: false,
-  },
-  {
-    id: 104,
-    billFrom: 'PineappleTimes.',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ganesh glory,Godrej garden city,Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'RFc.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date(),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Shipped',
-    completed: false,
-    isSelected: false,
-  },
-  {
-    id: 105,
-    billFrom: 'FortuneCreation',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ganesh glory,Godrej garden city,Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'Soft solution.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date('2020-10-15'),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Delivered',
-    completed: false,
-    isSelected: false,
-  },
-  {
-    id: 106,
-    billFrom: 'PineappleTimes.',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ganesh glory,Godrej garden city,Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'RFc.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date(),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Shipped',
-    completed: false,
-    isSelected: false,
-  },
-  {
-    id: 107,
-    billFrom: 'FortuneCreation',
-    billFromEmail: 'first@xabz.com',
-    billFromAddress: 'Ganesh glory,Godrej garden city,Ahmedabad.',
-    billFromPhone: 979796786,
-    billFromFax: 13,
-    billTo: 'Soft solution.',
-    billToEmail: 'toFirst@agth.com',
-    billToAddress: 'Godrej garden city,Ahmedabad.',
-    billToPhone: 757575233,
-    billToFax: 76,
-    orders: [
-      {
-        itemName: 'Courge',
-        unitPrice: 10,
-        units: 9,
-        unitTotalPrice: 90,
-      },
-    ],
-    orderDate: new Date('2020-10-15'),
-    totalCost: 90,
-    vat: 9,
-    grandTotal: 99,
-    status: 'Delivered',
-    completed: false,
-    isSelected: false,
-  },
-];
 
 const InvoiceList = (props) => {
-  const invoices = useState(invoceLists);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState([]);
   const [activeTab, setActiveTab] = useState('CUSTOMER');
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const tabItem = ['CUSTOMER', 'PARTNER', 'FULLFILLMENT', 'EMPLOYEES'];
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [isOpenDialog, setIsDialogOpen] = useState(false);
+  const tabItem = ['CUSTOMER', 'PARTNER', 'FULFILLMENT', 'EMPLOYEES'];
+  const [email, setEmail] = useState('')
+  const [role, setRole] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [checkbox1, setCheckbox1] = useState("");
+  const [checkbox2, setCheckbox2] = useState("");
+  const [checkbox3, setCheckbox3] = useState("");
 
   useEffect(() => {
     async function setPayload() {
@@ -257,45 +71,94 @@ const InvoiceList = (props) => {
     setPayload()
   }, [])
 
+  async function callApi() {
+    let res = await fetchUser();
+    setData(res);
+  }
+
   // Handle status filter change
   const handleClick = (status) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % tabItem.length);
     setActiveTab(status);
   };
 
+  function handleCloseDialog() {
+    setIsDialogOpen(false);
+    refreshData();
+  }
+
   // Filter invoices based on search term
   const filteredInvoices = data.length > 0
     ? data.filter((val) => {
-        return (
-          val.role === activeTab &&
-          (
-            val.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.mobileNumber.toString().includes(searchTerm) 
-          )
-        );
-      })
+      return (
+        val.role === activeTab &&
+        (
+          val.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.mobileNumber.toString().includes(searchTerm)
+        )
+      );
+    })
     : [];
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
+  const refreshData=()=>{
+    setEmail('');
+    setRole("");
+    setCheckbox1("");
+    setCheckbox2("");
+    setCheckbox3("")
 
+  }
+
+  async function handleDone() {
+    try {
+      let feat = [];
+      if (checkbox1) {
+        feat.push("Finance")
+        if (checkbox2) {
+          feat.push("Employee management")
+        }
+        if (checkbox3) {
+          feat.push("Other screens")
+        }
+      }
+
+
+      let body = {
+        email,
+        role: activeTab.toUpperCase(),
+        isActive: "ACTIVE",
+        accessType: role,
+        restrictedFeatures: feat
+      }
+      let result = await addEmployee(body);
+      if (result.success) {
+        handleCloseDialog();
+        refreshData();
+        callApi();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   // Calculate the counts for different statuses
   // const Shipped = invoices.filter((t) => t.status === 'Shipped').length;
   // const Delivered = invoices.filter((t) => t.status === 'Delivered').length;
   // const Pending = invoices.filter((t) => t.status === 'Pending').length;
 
   // Toggle all checkboxes
- 
- 
+
+
 
   // Handle opening delete confirmation dialog
- 
+
 
   // Handle confirming deletion of selected products
-  
+
   // Handle closing delete confirmation dialog
-  
+
 
   return (
     <Box>
@@ -312,7 +175,7 @@ const InvoiceList = (props) => {
         }, {
           color: "success.light",
           bgcolor: "success.main",
-          text: "Fullfillment"
+          text: "Fulfillment"
 
         }, {
           color: "success.light",
@@ -337,7 +200,7 @@ const InvoiceList = (props) => {
                     alignItems="center"
                     justifyContent="center"
                   >
-                   
+
                   </Typography>
                 </Box>
                 <Box>
@@ -374,13 +237,16 @@ const InvoiceList = (props) => {
             ),
           }}
         />
-        
+        <Button variant="contained" color="primary" onClick={() => { setIsDialogOpen(true) }} >
+          Add User
+        </Button>
+
       </Stack>
       <Box sx={{ overflowX: 'auto' }}>
         <Table sx={{ whiteSpace: { xs: 'nowrap', md: 'unset' } }}>
           <TableHead>
             <TableRow>
-             
+
               <TableCell>
                 <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
                   Key
@@ -393,28 +259,28 @@ const InvoiceList = (props) => {
               </TableCell>
               <TableCell>
                 <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
-                 mobile number
+                  mobile number
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
-                 country code
+                  country code
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
-                 isActive
+                  isActive
                 </Typography>
               </TableCell>
-              
+
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredInvoices.length>0 &&  filteredInvoices.map((invoice,index) => (
+            {filteredInvoices.length > 0 && filteredInvoices.map((invoice, index) => (
               <TableRow key={invoice._id}>
                 <TableCell padding="checkbox">
-                <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
-                {index+1}
+                  <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
+                    {index + 1}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -433,14 +299,86 @@ const InvoiceList = (props) => {
                 <TableCell>
                   <Typography fontSize="14px" sx={{ textAlign: 'center' }}>{invoice.isActive}</Typography>
                 </TableCell>
-                
-                
+
+
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </Box>
-     
+      <Dialog open={isOpenDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Assign Role and Email</DialogTitle>
+        <DialogContent>
+          {/* Email input field */}
+          <TextField
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            margin="normal"
+          />
+
+          {/* Role Access Radio Buttons */}
+          <FormControl component="fieldset" margin="normal">
+            <FormLabel component="legend">Role Access</FormLabel>
+            <RadioGroup
+              value={role}
+              onChange={(e) => setRole(e.target.value.toUpperCase())}
+              row
+            >
+              <FormControlLabel
+                value="OWNER"
+                control={<Radio />}
+                label="Owner"
+              />
+              <FormControlLabel
+                value="EDITOR"
+                control={<Radio />}
+                label="Editor"
+              />
+              <FormControlLabel
+                value="VIEWER"
+                control={<Radio />}
+                label="Viewer"
+              />
+            </RadioGroup>
+          </FormControl>
+
+          <FormControl component="fieldset" margin="normal" style={{ display: "flex" }}>
+            <FormLabel component="legend">Additional Options</FormLabel>
+            <FormControlLabel
+              control={<Checkbox checked={checkbox1} onChange={(e) => setCheckbox1(e.target.checked)} />}
+              label="Finance"
+            />
+            <FormControlLabel
+              control={<Checkbox checked={checkbox2} onChange={(e) => setCheckbox2(e.target.checked)} />}
+              label="Employee management"
+            />
+            <FormControlLabel
+              control={<Checkbox checked={checkbox3} onChange={(e) => setCheckbox3(e.target.checked)} />}
+              label="Other screens"
+            />
+          </FormControl>
+        </DialogContent>
+
+        <DialogActions>
+          {/* Cancel button */}
+          <Button variant="contained" onClick={handleCloseDialog}>
+            Cancel
+          </Button>
+          {/* Done button */}
+          <Button
+            variant="outlined"
+            onClick={()=>handleDone()}
+            color="primary"
+          >
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </Box>
   );
 };
