@@ -14,7 +14,7 @@ function App() {
 
   const [userData, setUserData] = useState(() => {
     // Check if user is logged in from localStorage
-    return localStorage.getItem('userData') === 'true';
+    return localStorage.getItem('userData') || "";
   });
 
 

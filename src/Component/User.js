@@ -143,21 +143,7 @@ const InvoiceList = (props) => {
       console.log(err);
     }
   }
-  // Calculate the counts for different statuses
-  // const Shipped = invoices.filter((t) => t.status === 'Shipped').length;
-  // const Delivered = invoices.filter((t) => t.status === 'Delivered').length;
-  // const Pending = invoices.filter((t) => t.status === 'Pending').length;
-
-  // Toggle all checkboxes
-
-
-
-  // Handle opening delete confirmation dialog
-
-
-  // Handle confirming deletion of selected products
-
-  // Handle closing delete confirmation dialog
+ 
 
 
   return (
@@ -205,7 +191,7 @@ const InvoiceList = (props) => {
                 </Box>
                 <Box>
 
-                  <Typography fontWeight={500}> {ItemCard.text}</Typography>
+                  <Typography fontWeight={500}>{ItemCard.text}</Typography>
                 </Box>
               </Stack>
             </Box>

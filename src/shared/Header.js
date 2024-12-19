@@ -48,17 +48,6 @@ const Header = (props) => {
        
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-         
-          {/* <IconButton size="large" color="inherit">
-            {customizer.activeMode === 'light' ? (
-              <IconMoon size="21" stroke="1.5" onClick={() => dispatch(setDarkMode('dark'))} />
-            ) : (
-              <IconSun size="21" stroke="1.5" onClick={() => dispatch(setDarkMode('light'))} />
-            )}
-          </IconButton> */}
-
-       
-        
           <Profile setIsLoggedIn={props.setIsLoggedIn} userData={props.userData} />
         </Stack>
       </ToolbarStyled>
