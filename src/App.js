@@ -13,8 +13,9 @@ function App() {
   });
 
   const [userData, setUserData] = useState(() => {
-    // Check if user is logged in from localStorage
-    return localStorage.getItem('userData') || "";
+    // Check if user is logged in from localStorae
+    const storedUserData = localStorage.getItem('userData');
+    return storedUserData ? storedUserData : null;
   });
 
 
@@ -22,6 +23,7 @@ function App() {
     localStorage.setItem('isLoggedIn', isLoggedIn);
     localStorage.setItem("userData",userData)
   }, [isLoggedIn]);
+
 
   return (
     <ThemeProvider theme={theme}>

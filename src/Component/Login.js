@@ -15,6 +15,7 @@ const Login = (props) => {
       let res = await login({email,password})
       if(res.success) {
         props.setIsLoggedIn(true);
+        console.log("res.user.email")
         props.setUserData(res.user.email);
 
       }else{
