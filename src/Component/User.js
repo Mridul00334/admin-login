@@ -89,16 +89,16 @@ const InvoiceList = (props) => {
 
   // Filter invoices based on search term
   const filteredInvoices = data.length > 0
-    ? data.filter((val) => {
+  ? data.filter((val) => {
       return (
         val.role === activeTab &&
         (
-          val.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.mobileNumber.toString().includes(searchTerm)
+          (val.email && val.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (val.mobileNumber && val.mobileNumber.toString().includes(searchTerm))
         )
       );
     })
-    : [];
+  : [];
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -271,7 +271,7 @@ const InvoiceList = (props) => {
                 </TableCell>
                 <TableCell>
                   <Typography variant="h6" fontSize="14px" sx={{ textAlign: 'center' }}>
-                    {invoice.email}
+                    {invoice.email?invoice.email:"-"}
                   </Typography>
                 </TableCell>
                 <TableCell>
