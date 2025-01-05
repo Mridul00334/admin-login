@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Grid
+  Grid,
+  Button,
+  Typography
 } from '@mui/material';
 import { TreeTable } from 'primereact/treetable';
 import { Column } from 'primereact/column';
@@ -19,145 +21,11 @@ import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import { getList } from "../api/index";
 import "./tree.css"
-
+import AddCategory from "./addCategory";
 
 import Spinner from '../shared/Spinner/Spinner';
 
 
-
-
-
-
-
-// [
-//   {
-//     key: '0',
-//     data: {
-//       name: 'Applications',
-//       type: 'Folder',
-//       summary: 'Folder for apps',
-//       label: 'Applications',
-//       priority: 'High',
-//       assignee: 'John Doe',
-//       status: 'In Progress'
-//     },
-//     children: [
-//       {
-//         key: '0-0',
-//         data: {
-//           name: 'React',
-//           type: 'Folder',
-//           summary: 'React Framework apps',
-//           label: 'React',
-//           priority: 'Medium',
-//           assignee: 'John Doe',
-//           status: 'In Progress'
-//         },
-//         children: [
-//           {
-//             key: '0-0-0',
-//             data: {
-//               name: 'react.app',
-//               type: 'Application',
-//               summary: 'React Application',
-//               label: 'react.app',
-//               priority: 'High',
-//               assignee: 'John Doe',
-//               status: 'In Progress'
-//             }
-//           },
-//           {
-//             key: '0-0-1',
-//             data: {
-//               name: 'native.app',
-//               type: 'Application',
-//               summary: 'React Native Application',
-//               label: 'native.app',
-//               priority: 'Low',
-//               assignee: 'John Doe',
-//               status: 'In Progress'
-//             }
-//           },
-//           {
-//             key: '0-0-2',
-//             data: {
-//               name: 'mobile.app',
-//               type: 'Application',
-//               summary: 'Mobile Application',
-//               label: 'mobile.app',
-//               priority: 'Low',
-//               assignee: 'John Doe',
-//               status: 'In Progress'
-//             }
-//           }
-//         ]
-//       },
-//       {
-//         key: '0-1',
-//         data: {
-//           name: 'editor.app',
-//           type: 'Application',
-//           summary: 'Editor app',
-//           label: 'editor.app',
-//           priority: 'Medium',
-//           assignee: 'John Doe',
-//           status: 'In Progress'
-//         }
-//       },
-//       {
-//         key: '0-2',
-//         data: {
-//           name: 'settings.app',
-//           type: 'Application',
-//           summary: 'App settings',
-//           label: 'settings.app',
-//           priority: 'High',
-//           assignee: 'John Doe',
-//           status: 'In Progress'
-//         }
-//       }
-//     ]
-//   },
-//   {
-//     key: '1',
-//     data: {
-//       name: 'Cloud',
-//       type: 'Folder',
-//       summary: 'Cloud storage folder',
-//       label: 'Cloud',
-//       priority: 'Medium',
-//       assignee: 'John Doe',
-//       status: 'In Progress'
-//     },
-//     children: [
-//       {
-//         key: '1-0',
-//         data: {
-//           name: 'backup-1.zip',
-//           type: 'Zip',
-//           summary: 'Backup file 1',
-//           label: 'backup-1.zip',
-//           priority: 'Low',
-//           assignee: 'John Doe',
-//           status: 'In Progress'
-//         }
-//       },
-//       {
-//         key: '1-1',
-//         data: {
-//           name: 'backup-2.zip',
-//           type: 'Zip',
-//           summary: 'Backup file 2',
-//           label: 'backup-2.zip',
-//           priority: 'Low',
-//           assignee: 'John Doe',
-//           status: 'In Progress'
-//         }
-//       }
-//     ]
-//   }
-//   // Add other nodes similarly...
-// ]
 
 const ReactBasicTable = () => {
   const [expandedRows, setExpandedRows] = useState(false);
@@ -165,6 +33,7 @@ const ReactBasicTable = () => {
   const [editable, setEditable] = useState(false);
   const [nodes, setNodes] = useState([]);
   const [allKeys, setAllKeys] = useState([]);
+  const [addCategory,setAddCategory]=useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -251,7 +120,7 @@ const ReactBasicTable = () => {
 
     getData()
 
-  }, []);
+  }, [addCategory]);
 
   function redirect() {
 
@@ -348,8 +217,21 @@ const ReactBasicTable = () => {
 
   };
 
+  const addCategoryItem=()=>{
+   
+    console.log("ksdnjnfdj")
+   
+  }
+
   return (
+    <>
+      <Typography variant="h4" gutterBottom>
+   {!addCategory? "Categories List":"Add Category"}
+  </Typography>
+  {!addCategory  ? (
+  
     <DownloadCard onDownload={handleDownload}>
+      
       {isLoading && <Spinner />}
       <Grid container spacing={3}>
         <Grid item xs={12}>
@@ -382,10 +264,15 @@ const ReactBasicTable = () => {
               overflow: "hidden"
             },
           }}>
-            <div className="flex align-items-center" style={{ flexWrap: "wrap", margin: "30px" }}>
-
-
+            <div className="flex align-items" style={{ flexWrap: "wrap", margin: "30px",width:"110px" }}>
+      
+            <Button variant="contained" color="primary" onClick={()=>{setAddCategory(true)}} style={{cursor:"pointer",width:"100px",height:"30px",margin:"auto"}}  >
+          Add User
+      </Button>
+     
             </div>
+           
+      
 
             <TreeTable
               value={nodes}
@@ -445,9 +332,10 @@ const ReactBasicTable = () => {
           </Box>
         </Grid>
       </Grid>
-    </DownloadCard>
-
-  );
+    </DownloadCard>):(
+ <><AddCategory addCategory={addCategory} setAddCategory={setAddCategory}/></>
+    ) }
+  </>)
 };
 
 export default ReactBasicTable;

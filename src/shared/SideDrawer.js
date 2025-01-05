@@ -56,9 +56,7 @@ function SideDrawer(props) {
 
           <Routes>
             <Route path="/overview" element={
-              <><Typography variant="h4" gutterBottom>
-                Categories List
-              </Typography>
+              <>
                 <Tree />
               </>} />
             <Route path="/" element={<User />} />
