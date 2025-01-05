@@ -11,7 +11,9 @@ import {
   Select,
   MenuItem,
   FormControl,
+  IconButton,
 } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material'; // Import the ArrowBack icon
 import { addCategoryData } from '../api';
 
 const AddCategory = ({ setAddCategory }) => {
@@ -59,6 +61,15 @@ const AddCategory = ({ setAddCategory }) => {
 
   return (
     <Box p={3}>
+      {/* Go Back Arrow */}
+      <Grid container justifyContent="flex-start" mb={2}>
+        <Grid item>
+          <IconButton onClick={() => setAddCategory(false)}>
+            <ArrowBack />
+          </IconButton>
+        </Grid>
+      </Grid>
+
       {/* First Row: Title, Subtitle, Analytics Events */}
       <Grid container spacing={2}>
         <Grid item xs={4}>
