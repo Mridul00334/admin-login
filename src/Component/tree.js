@@ -269,7 +269,7 @@ const ReactBasicTable = () => {
           }}>
             <div className="flex align-items" style={{ flexWrap: "wrap", margin: "30px",width:"140px" }}>
       
-            <Button variant="contained" color="primary" onClick={()=>{setAddCategory(true)}} style={{cursor:"pointer",width:"100px",height:"30px",margin:"auto"}}  >
+            <Button variant="contained" color="primary" onClick={()=>{setAddCategory(true)}} style={{cursor:"pointer",width:"120px",height:"30px",margin:"auto"}}  >
           Add Category
       </Button>
      
