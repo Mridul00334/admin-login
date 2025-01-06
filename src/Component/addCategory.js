@@ -16,7 +16,7 @@ import {
 import { ArrowBack } from '@mui/icons-material'; // Import the ArrowBack icon
 import { addCategoryData } from '../api';
 
-const AddCategory = ({ setAddCategory }) => {
+const AddCategory = ({ setAddCategory,parentKey }) => {
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [analyticsEvents, setAnalyticsEvents] = useState('');
@@ -53,6 +53,7 @@ const AddCategory = ({ setAddCategory }) => {
       enabled,
       imageURL,
       description, // Include description in the data object
+      parentKey
     };
     addCategoryData(data).then((res) => {
       // Handle the response after submission

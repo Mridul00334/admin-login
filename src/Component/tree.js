@@ -34,6 +34,7 @@ const ReactBasicTable = () => {
   const [nodes, setNodes] = useState([]);
   const [allKeys, setAllKeys] = useState([]);
   const [addCategory,setAddCategory]=useState(false);
+  const [parentKey,setParentKey]=useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -79,10 +80,11 @@ const ReactBasicTable = () => {
           const currentKey = parentKey; // Create key for the current item
 
           // Spread informationDetails and analyticsDetails into the same object
-          let { informationDetails, analyticsDetails, children, Information_ID, Analytics_ID, ...res } = item
+          let { informationDetails, analyticsDetails, children, Information_ID, Analytics_ID,_id, ...res } = item
           const transformedItem = {
             key: currentKey.toString(), // Add the current key
             data: {
+              parentId:_id,
               ...res,
               ...informationDetails,
               ...analyticsDetails
@@ -100,6 +102,7 @@ const ReactBasicTable = () => {
           return transformedItem;
         });
       };
+    
       let finalArr = transformData(data);
 
       const akey = new Set();
@@ -112,7 +115,7 @@ const ReactBasicTable = () => {
       setSelectedItems(Array.from(akey));  // Set the initial list of items with `name` and `code`
       setAllKeys(selectedKeys);    // Set the initial selected keys
       setNodes(finalArr)
-      console.log(Array.from(akey))
+     
       setIsLoading(false)
     };
 
@@ -267,7 +270,7 @@ const ReactBasicTable = () => {
             <div className="flex align-items" style={{ flexWrap: "wrap", margin: "30px",width:"110px" }}>
       
             <Button variant="contained" color="primary" onClick={()=>{setAddCategory(true)}} style={{cursor:"pointer",width:"100px",height:"30px",margin:"auto"}}  >
-          Add User
+          Add Category
       </Button>
      
             </div>
@@ -291,8 +294,8 @@ const ReactBasicTable = () => {
 
                   body={(rowData) => {
                     // Check if the field is an object, and handle it accordingly
-                    if (key === "_id") {
-                      return <img src={epic} style={{ height: "14px", weight: "10px" }} />
+                    if (key === "parentId") {
+                      return <img src={epic} style={{ height: "14px", weight: "10px" }} onClick={()=>{setAddCategory(true);setParentKey(rowData.data[key]);console.log(rowData.data[key])}} />
                     }
                     if (typeof rowData.data[key] === 'object' && rowData.data[key] !== null) {
                       // For 'createdBy', render firstName and lastName
@@ -320,7 +323,7 @@ const ReactBasicTable = () => {
                     return rowData.data[key];
                   }}
                   // Adjust for expandability if needed
-                  expander={key === "_id"}
+                  expander={key === "parentId"}
                   sortable // Enable sorting
                 />
               ))}
@@ -333,7 +336,7 @@ const ReactBasicTable = () => {
         </Grid>
       </Grid>
     </DownloadCard>):(
- <><AddCategory addCategory={addCategory} setAddCategory={setAddCategory}/></>
+ <><AddCategory addCategory={addCategory} setAddCategory={setAddCategory} parentKey={parentKey}/></>
     ) }
   </>)
 };
